@@ -142,8 +142,13 @@ const driver = neo4j.driver(
     neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PASSWORD)
 )
 
+const neoSchema = new Neo4jGraphQL({ typeDefs, driver })
+
 const apolloServer = new ApolloServer({
-    typeDefs, resolvers, playground: true, plugins: [ApolloServerPluginLandingPageGraphQLPlayground]
+    schema: neoSchema.schema,
+    playground: true,
+    introspection: true,
+    plugins: [ApolloServerPluginLandingPageGraphQLPlayground]
 })
 
 const startServer = apolloServer.start()
