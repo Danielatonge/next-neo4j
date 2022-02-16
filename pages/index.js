@@ -3,6 +3,11 @@ import { useQuery, gql } from "@apollo/client"
 import { useState } from "react";
 import _ from "lodash";
 import { v4 as uuid } from "uuid";
+import * as React from 'react';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Link from '../src/component/Link';
 
 const fetchUsersQuery = gql`
   {
@@ -36,7 +41,7 @@ const fetchUsersQuery = gql`
 }
 `
 
-const NoSSRForceGraph = dynamic(() => import("../lib/NoSSRForceGraph"), { ssr: false })
+const NoSSRForceGraph = dynamic(() => import("../src/lib/NoSSRForceGraph"), { ssr: false })
 
 const formatData = (data) => {
   const nodes = [];
@@ -118,17 +123,29 @@ export default function Home() {
 
   console.log(uuid())
   return (
-    <NoSSRForceGraph
-      nodeAutoColorBy={"__typename"}
-      graphData={graphData}
-      onNodeClick={(node, event) => {
-        console.log(node);
-        // if (node.__typename === "Tag") {
+    <Container maxWidth="sm">
+      <Box sx={{ my: 4 }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Next.js example
+        </Typography>
+        <Link href="/about" color="secondary">
+          Go to the about page
+        </Link>
+      </Box>
+      <Box sx={{ my: 4 }}>
+        <NoSSRForceGraph
+          nodeAutoColorBy={"__typename"}
+          graphData={graphData}
+          onNodeClick={(node, event) => {
+            console.log(node);
+            // if (node.__typename === "Tag") {
 
-        // } else if (node.__typename === "Article") {
+            // } else if (node.__typename === "Article") {
 
-        // }
-      }}
-    />
+            // }
+          }}
+        />
+      </Box>
+    </Container>
   )
 }

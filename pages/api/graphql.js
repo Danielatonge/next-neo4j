@@ -6,12 +6,10 @@ import neo4j from "neo4j-driver"
 const typeDefs = gql`
 type Query {
   employeeCount: Int 
-  @auth(rules: [{isAuthenticated: true}]) 
   @cypher(statement: """
     MATCH (u:User)-[:WORKS_IN]->(c:Company) RETURN COUNT(u)
   """)
   employeeRating: [EmployeeRating] 
-    @auth(rules: [{isAuthenticated: true}]) 
     @cypher(statement:"""
     match (u:User)<-[:IN_DOMAIN]-(d:Domain) 
     return {id: u.id, rating: avg(toFloat(d.rating))} as obj
