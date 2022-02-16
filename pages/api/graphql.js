@@ -43,7 +43,7 @@ type User {
   mentoring: [User]
   goal: String
   tags: [String]
-  mentors: [User]
+  mentors: [User] @relationship(type: "MENTORS", direction: OUT)
   dataSources: [DataSource] @relationship(type: "CONNECTS_DATA", direction: IN)
   areaOfSpecialization: [Domain] @relationship(type: "IN_DOMAIN", direction: IN)
   messages: [Message] @relationship(type: "MESSAGES", direction: IN)
@@ -134,31 +134,31 @@ type Company {
 `
 
 const driver = neo4j.driver(
-    process.env.NEO4J_URI,
-    neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PASSWORD)
+  process.env.NEO4J_URI,
+  neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PASSWORD)
 )
 
 const neoSchema = new Neo4jGraphQL({ typeDefs, driver })
 
 const apolloServer = new ApolloServer({
-    schema: neoSchema.schema,
-    playground: true,
-    introspection: true,
-    plugins: [ApolloServerPluginLandingPageGraphQLPlayground]
+  schema: neoSchema.schema,
+  playground: true,
+  introspection: true,
+  plugins: [ApolloServerPluginLandingPageGraphQLPlayground]
 })
 
 const startServer = apolloServer.start()
 
 export default async function handler(req, res) {
-    await startServer;
+  await startServer;
 
-    await apolloServer.createHandler({
-        path: "/api/graphql",
-    })(req, res);
+  await apolloServer.createHandler({
+    path: "/api/graphql",
+  })(req, res);
 }
 
 export const config = {
-    api: {
-        bodyParser: false
-    }
+  api: {
+    bodyParser: false
+  }
 }
