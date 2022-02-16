@@ -2,6 +2,7 @@ import { gql, ApolloServer } from "apollo-server-micro"
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core"
 import { Neo4jGraphQL } from "@neo4j/graphql"
 import neo4j from "neo4j-driver"
+import "ts-tiny-invariant"
 
 const typeDefs = gql`
 scalar Point
