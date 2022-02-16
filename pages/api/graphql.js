@@ -4,10 +4,6 @@ import { Neo4jGraphQL } from "@neo4j/graphql"
 import neo4j from "neo4j-driver"
 
 const typeDefs = gql`
-scalar Point
-scalar DateTime
-scalar PointInput
-
 type Query {
   employeeCount: Int 
   @auth(rules: [{isAuthenticated: true}]) 
