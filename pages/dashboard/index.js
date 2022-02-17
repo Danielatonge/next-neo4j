@@ -2,18 +2,11 @@ import * as React from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
-import Box from '@mui/material/Box';
 import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Link from '@mui/material/Link';
+import {
+    Box, Toolbar, List, Typography, Divider, Button, Tooltip,
+    IconButton, Badge, Container, Grid, Paper, Link, Avatar
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -21,6 +14,7 @@ import { mainListItems, secondaryListItems } from '../../src/component/dashboard
 import Chart from '../../src/component/dashboard/Chart';
 import Deposits from '../../src/component/dashboard/Deposits';
 import Orders from '../../src/component/dashboard/Orders';
+import { useAuth0 } from '@auth0/auth0-react'
 
 function Copyright(props) {
     return (
@@ -81,6 +75,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     }),
 );
 
+
 const mdTheme = createTheme();
 
 function DashboardContent() {
@@ -88,6 +83,8 @@ function DashboardContent() {
     const toggleDrawer = () => {
         setOpen(!open);
     };
+
+    const { user, loginWithRedirect, logout, isAuthenticated } = useAuth0()
 
     return (
         <ThemeProvider theme={mdTheme}>
@@ -118,14 +115,29 @@ function DashboardContent() {
                             noWrap
                             sx={{ flexGrow: 1 }}
                         >
-                            Dashboard
+                            Unstoppable Demo
                         </Typography>
-                        <IconButton color="inherit">
-                            <Badge badgeContent={4} color="secondary">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
+
+                        {
+                            !isAuthenticated && <Button color="inherit" onClick={() => loginWithRedirect()} >
+                                Login
+                            </Button>
+                        }
+                        {
+                            isAuthenticated && (
+                                <Box sx={{ flexGrow: 0 }}>
+                                    <Tooltip title={user.email} >
+                                        <IconButton sx={{ p: 0 }}>
+                                            <Avatar alt={user.name} src={user.picture} sx={{ width: 46, height: 46 }} />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Button color="inherit" onClick={() => logout()}>
+                                        Logout
+                                    </Button>
+                                </Box>)
+                        }
                     </Toolbar>
+
                 </AppBar>
                 <Drawer variant="permanent" open={open}>
                     <Toolbar

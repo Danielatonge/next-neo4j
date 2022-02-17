@@ -5,7 +5,10 @@ import { useTheme } from '@mui/material/styles';
 import clsx from 'clsx'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-const MapGL = dynamic(() => import('@urbica/react-map-gl'), { ssr: false })
+const MapGL = dynamic(() => import('./Map'), {
+    loading: () => "Loading...",
+    ssr: false
+})
 
 export default function MapResults() {
     const [viewport, setViewport] = React.useState({
@@ -29,13 +32,18 @@ export default function MapResults() {
             height: 440,
         },
     }
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight)
 
     return (
         <React.Fragment>
             <Grid container spacing={4}>
-                <Grid item xs={12} md={8} lg={7}>
-                    <Paper className={fixedHeightPaper}>
+                <Grid item xs={12} >
+                    <Paper style={{
+                        height: '80vh',
+                        padding: theme.spacing(2),
+                        display: 'flex',
+                        overflow: 'auto',
+                        flexDirection: 'column'
+                    }}>
                         <MapGL
                             style={{ width: '100%', height: '100%' }}
                             mapStyle="mapbox://styles/mapbox/light-v9"
@@ -47,11 +55,7 @@ export default function MapResults() {
                         />
                     </Paper>
                 </Grid>
-                <Grid item xs={12} md={4} lg={5}>
-                    <Paper className={fixedHeightPaper}>
-                        <p>Details View</p>
-                    </Paper>
-                </Grid>
+
             </Grid>
         </React.Fragment>
     )
