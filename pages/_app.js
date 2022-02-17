@@ -4,14 +4,17 @@ import Head from 'next/head';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
-import theme from '../src/themes/theme';
-import createEmotionCache from '../src/themes/createEmotionCache';
+import theme from '../themes/theme';
+import createEmotionCache from '../themes/createEmotionCache';
 import {
   ApolloProvider,
   ApolloClient,
   InMemoryCache,
   HttpLink,
 } from "@apollo/client";
+// authentication with auth0
+import { Auth0Provider } from "@auth0/auth0-react";
+import MainLayout from '../layout/MainLayout';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -28,22 +31,33 @@ const createApolloClient = () => {
   });
 };
 
+
 function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
+  // Use the layout defined at the page level, if available
+  const getLayout = Component.getLayout || ((page) => page)
+
   return (
-    <ApolloProvider client={createApolloClient()}>
-      <CacheProvider value={emotionCache}>
-        <Head>
-          <meta name="viewport" content="initial-scale=1, width=device-width" />
-        </Head>
-        <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </CacheProvider>
-    </ApolloProvider>
+    <Auth0Provider
+      domain={process.env.NEXT_PUBLIC_AUTH0_DOMAIN}
+      clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENTID}
+      redirectUri={"http://localhost:3000"}
+      audience={process.env.NEXT_PUBLIC_JWT_AUDIENCE}
+    >
+      <ApolloProvider client={createApolloClient()}>
+        <CacheProvider value={emotionCache}>
+          <Head>
+            <meta name="viewport" content="initial-scale=1, width=device-width" />
+          </Head>
+          <ThemeProvider theme={theme}>
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
+            {getLayout(<Component {...pageProps} />)}
+          </ThemeProvider>
+        </CacheProvider>
+      </ApolloProvider>
+    </Auth0Provider>
   );
 }
 

@@ -1,5 +1,8 @@
 import React from 'react'
-import MapResults from '../../src/component/dashboard/MapResults'
+import MapResults from 'component/dashboard/MapResults'
+
+// page layout
+import MainLayout from 'layout/MainLayout';
 
 function Search() {
 
@@ -7,3 +10,11 @@ function Search() {
 }
 
 export default Search
+
+Search.getLayout = function getLayout(page) {
+    return (
+        <MainLayout>
+            {page}
+        </MainLayout>
+    )
+}

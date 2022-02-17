@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/dashboard/*": ["component/dashboard/*"],
+            "@/cards/*": ["component/cards/*"]
+        }
+    }
+}

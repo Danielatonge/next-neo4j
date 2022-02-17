@@ -1,11 +1,22 @@
 import dynamic from "next/dynamic";
 import { useQuery, gql } from "@apollo/client"
 import { useState } from "react";
-import _ from "lodash";
 import { v4 as uuid } from "uuid";
 import * as React from 'react';
 import { Box, Typography, Grid, Paper } from '@mui/material';
-import Link from '../../src/component/Link';
+import Link from 'component/Link';
+import { styled } from '@mui/material/styles';
+
+// mui/material
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import CancelIcon from '@mui/icons-material/Cancel';
+
+// page layout
+import MainLayout from 'layout/MainLayout';
+
+// components
+import SummaryCard from "@/cards/SummaryCard";
 
 const fetchUsersQuery = gql`
   {
@@ -39,7 +50,8 @@ const fetchUsersQuery = gql`
 }
 `
 
-const NoSSRForceGraph = dynamic(() => import("../../src/lib/NoSSRForceGraph"), { ssr: false })
+const NoSSRForceGraph = dynamic(() => import("../../lib/NoSSRForceGraph"), { ssr: false })
+
 
 const formatData = (data) => {
     const nodes = [];
@@ -69,8 +81,9 @@ const formatData = (data) => {
             });
 
             links.push({
-                source: a_node,
-                target: b_node,
+                source: b_node,
+                target: a_node,
+                value: 1,
             });
         });
 
@@ -84,8 +97,9 @@ const formatData = (data) => {
             });
 
             links.push({
-                source: a_node,
-                target: c_node,
+                source: c_node,
+                target: a_node,
+                value: 1,
             });
 
             c.skillSets.forEach((s) => {
@@ -99,8 +113,9 @@ const formatData = (data) => {
                 });
 
                 links.push({
-                    source: c_node,
-                    target: s_node,
+                    source: s_node,
+                    target: c_node,
+                    value: 0.5,
                 });
             })
 
@@ -113,23 +128,57 @@ const formatData = (data) => {
     };
 };
 
-export default function Home() {
+const generateProperty = (node) => {
+    const { __typename, __indexColor, fx, fy, color, index, x, y, vx, vy, id, ...rest } = node
+    const nnode = rest;
+    return { values: Object.keys(nnode).map((key) => [key, nnode[key]]), type: __typename };
+}
+
+export default function Explore() {
     const [graphData, setGraphData] = useState({ nodes: [], links: [] })
     const { data } = useQuery(fetchUsersQuery, {
         onCompleted: (data) => setGraphData(formatData(data))
     })
 
-    console.log(uuid())
+    // variables to control data grid in summaryCard
+    const [desc, setDesc] = useState({})
+    const [showCard, setShowCard] = useState(false)
+
     return (
         <React.Fragment>
-            <Grid container spacing={4}>
+            <Grid container spacing={6} sx={{ position: 'relative' }} >
+                <div >
+                    <div style={{
+                        position: "absolute",
+                        right: 0,
+                        top: 22,
+                        backgroundColor: "grey", borderRadius: '50%',
+                        color: "white",
+                        zIndex: 3,
+                        display: showCard ? "block" : 'none',
+                    }}
+                        onClick={(e) => setShowCard(false)}
+                    >
+
+                        <IconButton sx={{ color: 'white' }} size="small" aria-label="add to shopping cart">
+                            <CancelIcon />
+                        </IconButton>
+                    </div>
+                    <SummaryCard rows={desc} showCard={showCard} />
+                </div>
                 <Grid item xs={12} md={8} lg={7}>
-                    <Box sx={{ my: 4 }}>
+                    <Box>
                         <NoSSRForceGraph
+                            height="1000"
+                            width="1200"
                             nodeAutoColorBy={"__typename"}
                             graphData={graphData}
-                            onNodeClick={(node, event) => {
+                            linkDirectionalParticles="value"
+                            linkDirectionalParticleSpeed={d => d.value * 0.01}
+                            onNodeClick={(node) => {
                                 console.log(node);
+                                setDesc(generateProperty(node))
+                                setShowCard(true)
                                 // if (node.__typename === "Tag") {
 
                                 // } else if (node.__typename === "Article") {
@@ -141,5 +190,13 @@ export default function Home() {
                 </Grid>
             </Grid>
         </React.Fragment>
+    )
+}
+
+Explore.getLayout = function getLayout(page) {
+    return (
+        <MainLayout>
+            {page}
+        </MainLayout>
     )
 }
