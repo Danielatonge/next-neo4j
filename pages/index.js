@@ -5,7 +5,7 @@ import Router from 'next/router'
 
 export default function Index() {
   useEffect(() => {
-    Router.push("/home")
+    Router.push("/dashboard")
   })
   return <div />
 
