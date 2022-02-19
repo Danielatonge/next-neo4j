@@ -150,8 +150,8 @@ export default function Explore() {
                 <div >
                     <div style={{
                         position: "absolute",
-                        right: 0,
-                        top: 22,
+                        right: -60,
+                        top: 52,
                         backgroundColor: "grey", borderRadius: '50%',
                         color: "white",
                         zIndex: 3,

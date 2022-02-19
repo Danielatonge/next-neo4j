@@ -5,7 +5,7 @@ import Router from 'next/router'
 
 export default function Index() {
   useEffect(() => {
-    Router.push("/auth/login")
+    Router.push("/home")
   })
   return <div />
 

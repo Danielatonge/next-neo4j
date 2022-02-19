@@ -35,7 +35,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function SummaryCard({ rows, showCard }) {
 
     return (
-        <Card sx={{ minWidth: 300, position: 'absolute', top: 22, right: 0, zIndex: 2, display: showCard ? "block" : "none" }}>
+        <Card sx={{ minWidth: 300, position: 'absolute', top: 52, right: -60, zIndex: 2, display: showCard ? "block" : "none" }}>
             <CardContent>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 200 }} size="small" aria-label="customized table">

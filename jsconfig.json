@@ -3,7 +3,10 @@
         "baseUrl": ".",
         "paths": {
             "@/dashboard/*": ["component/dashboard/*"],
-            "@/cards/*": ["component/cards/*"]
+            "@/cards/*": ["component/cards/*"],
+            "@/landing/*": [
+                "component/landing/*"
+            ]
         }
     }
 }

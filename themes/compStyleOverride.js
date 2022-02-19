@@ -73,14 +73,14 @@ export default function componentStyleOverrides(theme) {
                 }
             }
         },
-        MuiListItemIcon: {
-            styleOverrides: {
-                root: {
-                    color: theme.darkTextPrimary,
-                    minWidth: '36px'
-                }
-            }
-        },
+        // MuiListItemIcon: {
+        //     styleOverrides: {
+        //         root: {
+        //             color: theme.darkTextPrimary,
+        //             minWidth: '36px'
+        //         }
+        //     }
+        // },
         MuiListItemText: {
             styleOverrides: {
                 primary: {
