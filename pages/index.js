@@ -7,7 +7,5 @@ export default function Index() {
   useEffect(() => {
     Router.push("/dashboard")
   })
-  return <div />
-
-
+  return <div></div>
 }

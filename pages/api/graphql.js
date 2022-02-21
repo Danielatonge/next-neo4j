@@ -23,13 +23,6 @@ type EmployeeRating @exclude {
   rating: Float
 }
 
-extend type User {
-  averageRating: Float @cypher(statement:"""
-    match (this)<-[:IN_DOMAIN]-(d:Domain) 
-    return avg(toFloat(d.rating))
-  """)
-}
-
 type User {
   id: ID!
   type: String
@@ -53,6 +46,14 @@ type User {
   country: String
   company: Company @relationship(type: "IN_COMPANY", direction: OUT)
   createdAt: DateTime
+}
+
+extend type User {
+  averageRating: Float @cypher(statement:"""
+    match (this)<-[:IN_DOMAIN]-(d:Domain) 
+    return avg(toFloat(d.rating))
+  """)
+
 }
 
 type Message {
@@ -101,11 +102,17 @@ type Post {
   extraContent: String
   postMedia: [String]
   links: String
-  likes: [User]
+  likeCount: Int
   user: User @relationship(type: "WRITES_POST", direction: OUT)
-  comments: [Comment] @relationship(type: "HAS_COMMENT", direction: IN)
+  comments: [Comment] @relationship(type: "HAS_COMMENT", direction: OUT)
   createdAt: DateTime
   updatedAt: DateTime
+}
+
+extend type Post {
+  commentCount: Int @cypher(statement:"""
+    match (this)-[:HAS_COMMENT]-(c:Comment) return count(c)
+  """)
 }
 
 type Comment {
@@ -113,7 +120,7 @@ type Comment {
   user: User 
   content: String
   likes: [User]
-  post: Post @relationship(type: "HAS_COMMENT", direction: OUT)
+  post: Post @relationship(type: "HAS_COMMENT", direction: IN)
   createdAt: DateTime
   updatedAt: DateTime
 }
