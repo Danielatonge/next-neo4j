@@ -102,7 +102,7 @@ type Post {
   extraContent: String
   postMedia: [String]
   links: String
-  likeCount: Int
+  likeCount: Int! @default(value: 0)
   user: User @relationship(type: "WRITES_POST", direction: OUT)
   comments: [Comment] @relationship(type: "HAS_COMMENT", direction: OUT)
   createdAt: DateTime
@@ -110,7 +110,7 @@ type Post {
 }
 
 extend type Post {
-  commentCount: Int @cypher(statement:"""
+  commentCount: Int! @cypher(statement:"""
     match (this)-[:HAS_COMMENT]-(c:Comment) return count(c)
   """)
 }
