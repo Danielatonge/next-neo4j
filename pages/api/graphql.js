@@ -70,14 +70,14 @@ type MessageItem {
 }
 
 type DataSource {
-  id: ID!
+  id: ID! 
   name: String
   link: String
   user: User @relationship(type: "CONNECTS_DATA", direction: OUT)
 }
 
 type Domain {
-  id: ID!
+  id: ID! 
   name: String
   similar: [String]
   description: String
@@ -88,7 +88,7 @@ type Domain {
 }
 
 type SkillSet {
-  id: ID!
+  id: ID! 
   name: String!
   type: String
   rating: Float
@@ -116,17 +116,17 @@ extend type Post {
 }
 
 type Comment {
-  id: ID!
+  id: ID! @id
   user: User 
   content: String
-  likes: [User]
+  likeCount: Int @default(value: 0)
   post: Post @relationship(type: "HAS_COMMENT", direction: IN)
-  createdAt: DateTime
-  updatedAt: DateTime
+  createdAt: DateTime @timestamp(operations: [CREATE])
+  updatedAt: DateTime @timestamp(operations: [UPDATE])
 }
 
 type Company {
-  id: ID!
+  id: ID! @id
   name: String
   city: String
   state: String
