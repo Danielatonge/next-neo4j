@@ -45,7 +45,7 @@ type User {
   state: String
   country: String
   company: Company @relationship(type: "IN_COMPANY", direction: OUT)
-  createdAt: DateTime
+  createdAt: DateTime @timestamp(operations: [CREATE])
 }
 
 extend type User {
@@ -97,16 +97,16 @@ type SkillSet {
 }
 
 type Post {
-  id: ID!
+  id: ID! @id
   content: String
   extraContent: String
   postMedia: [String]
   links: String
-  likeCount: Int! @default(value: 0)
+  likeCount: Int @default(value: 0)
   user: User @relationship(type: "WRITES_POST", direction: OUT)
   comments: [Comment] @relationship(type: "HAS_COMMENT", direction: OUT)
-  createdAt: DateTime
-  updatedAt: DateTime
+  createdAt: DateTime @timestamp(operations: [CREATE])
+  updatedAt: DateTime @timestamp(operations: [UPDATE])
 }
 
 extend type Post {
