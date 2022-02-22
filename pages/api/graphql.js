@@ -103,6 +103,7 @@ type Post {
   postMedia: [String]
   links: String
   likeCount: Int @default(value: 0)
+  likedUsers: [String!]
   user: User @relationship(type: "WRITES_POST", direction: OUT)
   comments: [Comment] @relationship(type: "HAS_COMMENT", direction: OUT)
   createdAt: DateTime @timestamp(operations: [CREATE])
