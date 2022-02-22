@@ -46,6 +46,7 @@ type User {
   country: String
   company: Company @relationship(type: "IN_COMPANY", direction: OUT)
   createdAt: DateTime @timestamp(operations: [CREATE])
+  comments: [Comment] @relationship(type: "COMMENTS", direction: IN)
 }
 
 extend type User {
@@ -117,7 +118,7 @@ extend type Post {
 
 type Comment {
   id: ID! @id
-  user: User 
+  user: User @relationship(type: "COMMENTS", direction: OUT)
   content: String
   likedUsers: [String!]
   post: Post @relationship(type: "HAS_COMMENT", direction: OUT)
