@@ -102,10 +102,9 @@ type Post {
   extraContent: String
   postMedia: [String]
   links: String
-  likeCount: Int @default(value: 0)
   likedUsers: [String!]
   user: User @relationship(type: "WRITES_POST", direction: OUT)
-  comments: [Comment] @relationship(type: "HAS_COMMENT", direction: OUT)
+  comments: [Comment] @relationship(type: "HAS_COMMENT", direction: IN)
   createdAt: DateTime @timestamp(operations: [CREATE])
   updatedAt: DateTime @timestamp(operations: [UPDATE])
 }
@@ -120,8 +119,8 @@ type Comment {
   id: ID! @id
   user: User 
   content: String
-  likeCount: Int @default(value: 0)
-  post: Post @relationship(type: "HAS_COMMENT", direction: IN)
+  likedUsers: [String!]
+  post: Post @relationship(type: "HAS_COMMENT", direction: OUT)
   createdAt: DateTime @timestamp(operations: [CREATE])
   updatedAt: DateTime @timestamp(operations: [UPDATE])
 }
