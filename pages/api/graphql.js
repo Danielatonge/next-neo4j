@@ -39,6 +39,7 @@ type User {
   areaOfSpecialization: [Domain] @relationship(type: "IN_DOMAIN", direction: IN)
   messages: [Message] @relationship(type: "MESSAGES", direction: IN)
   posts: [Post] @relationship(type: "WRITES_POST", direction: IN)
+  bookmarkedPosts: [Post] @relationship(type: "BOOKMARKS_POST", direction: OUT)
   location: Point
   address: String
   city: String
@@ -104,6 +105,7 @@ type Post {
   postMedia: [String]
   links: String
   likedUsers: [String!]
+  bookmarkedUsers: [User] @relationship(type: "BOOKMARKS_POST", direction: IN)
   user: User @relationship(type: "WRITES_POST", direction: OUT)
   comments: [Comment] @relationship(type: "HAS_COMMENT", direction: IN)
   createdAt: DateTime @timestamp(operations: [CREATE])
@@ -120,7 +122,7 @@ type Comment {
   id: ID! @id
   user: User @relationship(type: "COMMENTS", direction: OUT)
   content: String
-  likedUsers: [String!]
+  likedUsers: [String!] 
   post: Post @relationship(type: "HAS_COMMENT", direction: OUT)
   createdAt: DateTime @timestamp(operations: [CREATE])
   updatedAt: DateTime @timestamp(operations: [UPDATE])
