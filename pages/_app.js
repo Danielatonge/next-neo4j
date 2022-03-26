@@ -41,25 +41,19 @@ function MyApp(props) {
   const getLayout = Component.getLayout || ((page) => page)
 
   return (
-    <Auth0Provider
-      domain={process.env.NEXT_PUBLIC_AUTH0_DOMAIN}
-      clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENTID}
-      redirectUri={"http://localhost:3000"}
-      audience={process.env.NEXT_PUBLIC_JWT_AUDIENCE}
-    >
-      <ApolloProvider client={createApolloClient()}>
-        <CacheProvider value={emotionCache}>
-          <ThemeProvider theme={theme()}>
-            <Head>
-              <meta name="viewport" content="initial-scale=1, width=device-width" />
-            </Head>
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-            <CssBaseline />
-            {getLayout(<Component {...pageProps} />)}
-          </ThemeProvider>
-        </CacheProvider>
-      </ApolloProvider>
-    </Auth0Provider>
+
+    <ApolloProvider client={createApolloClient()}>
+      <CacheProvider value={emotionCache}>
+        <ThemeProvider theme={theme()}>
+          <Head>
+            <meta name="viewport" content="initial-scale=1, width=device-width" />
+          </Head>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
+          {getLayout(<Component {...pageProps} />)}
+        </ThemeProvider>
+      </CacheProvider>
+    </ApolloProvider>
   );
 }
 

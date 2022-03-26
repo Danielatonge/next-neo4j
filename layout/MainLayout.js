@@ -17,7 +17,7 @@ function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
             {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
+            <Link color="inherit" href="">
                 Unstoppable Universe
             </Link>{' '}
             {new Date().getFullYear()}
@@ -79,7 +79,7 @@ function MainLayout({ children }) {
         setOpen(!open);
     };
 
-    const { user, loginWithRedirect, logout, isAuthenticated } = useAuth0()
+    // const { user, loginWithRedirect, logout, isAuthenticated } = useAuth0()
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -112,24 +112,22 @@ function MainLayout({ children }) {
                         Unstoppable Demo
                     </Typography>
 
-                    {
-                        !isAuthenticated && <Button color="inherit" onClick={() => loginWithRedirect()} >
-                            Login
+
+                    <Button color="inherit"  >
+                        Login
+                    </Button>
+
+                    {/* <Box sx={{ flexGrow: 0 }}>
+                        <Tooltip title={user.email} >
+                            <IconButton sx={{ p: 0 }}>
+                                <Avatar alt={user.name} src={user.picture} sx={{ width: 46, height: 46 }} />
+                            </IconButton>
+                        </Tooltip>
+                        <Button color="inherit" >
+                            Logout
                         </Button>
-                    }
-                    {
-                        isAuthenticated && (
-                            <Box sx={{ flexGrow: 0 }}>
-                                <Tooltip title={user.email} >
-                                    <IconButton sx={{ p: 0 }}>
-                                        <Avatar alt={user.name} src={user.picture} sx={{ width: 46, height: 46 }} />
-                                    </IconButton>
-                                </Tooltip>
-                                <Button color="inherit" onClick={() => logout()}>
-                                    Logout
-                                </Button>
-                            </Box>)
-                    }
+                    </Box> */}
+
                 </Toolbar>
 
             </AppBar>
